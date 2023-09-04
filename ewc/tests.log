@@ -1,0 +1,137 @@
+
+
+  Test1 - Basic market functionality
+    Market deployment
+	> Double auction B market creation
+	>> Market state
+		 MAX price = 2000, MIN price = 5 
+	> Market Orders:
+	  Number of sell orders = 0
+	  Number of buy orders = 0
+	  -----
+      ✔ Check market owner (3928ms)
+      Market state handling
+        ✔ Reject normal user market handling (99ms)
+	> Market open
+	> Market closed
+        ✔ Normal Open->Close transit (76ms)
+        ✔ Reject invalid state change
+	> Market open
+	> Market closed
+        ✔ Empty market clearing (56ms)
+
+  Test2: Orders creation and handling
+    Adding orders to the market
+	> Double auction B market creation
+	>> Market state
+		 MAX price = 2000, MIN price = 5 
+	> Market Orders:
+	  Number of sell orders = 0
+	  Number of buy orders = 0
+	  -----
+	() User1 address: 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+      ✔ Order creation (111ms)
+	> Market open
+	>Adding sell order. Duplicated = false
+		New order: index= 1 quantity= 150 price=35
+		>> Adding new entry in map
+	> Market Orders:
+	  Number of sell orders = 1
+		Order 1: owner=0x70997970c51812dc3a010c7d01b50e0d17dc79c8 index=1
+		Order 1: quantity=150 price=35
+	  Number of buy orders = 0
+	  -----
+      ✔ Adding sell order by the owner (132ms)
+	> Market open
+      ✔ Rejecting a malformed order (58ms)
+	> Market open
+      ✔ Rejecting a order added to the market by another user (56ms)
+
+  Test3: Market with only one order
+    One PROVIDER order
+	> Double auction B market creation
+	>> Market state
+		 MAX price = 2000, MIN price = 5 
+	> Market Orders:
+	  Number of sell orders = 0
+	  Number of buy orders = 0
+	  -----
+	> Market open
+	>Adding sell order. Duplicated = false
+		New order: index= 1 quantity= 150 price=35
+		>> Adding new entry in map
+	> Market Orders:
+	  Number of sell orders = 1
+		Order 1: owner=0x70997970c51812dc3a010c7d01b50e0d17dc79c8 index=1
+		Order 1: quantity=150 price=35
+	  Number of buy orders = 0
+	  -----
+	> Market closed
+	>> Market clearing
+
+	>> Matching phase:
+	>>> Over-production of 150
+
+	>> Price phase:
+	>>> Market cleared. Price = 0, quantity = 0, volume = 0
+
+	>> Off-market clearing phase:
+	>>> Off market size = 1
+		 Unmatched demand = 0, unmatched production = 150
+      ✔ Sent the order to the market (243ms)
+    One CONSUMER order
+	> Market open
+		>> Adding new entry in map
+	> Market Orders:
+	  Number of sell orders = 0
+	  Number of buy orders = 1
+		Order 1: owner=0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc index=1
+		Order 1: quantity=100 price=25
+	  -----
+	> Market closed
+	>> Market clearing
+
+	>> Matching phase:
+	>>> Over-demand of 100
+
+	>> Price phase:
+	>>> Market cleared. Price = 0, quantity = 0, volume = 0
+
+	>> Off-market clearing phase:
+	>>> Off market size = 1
+		 Unmatched demand = 100, unmatched production = 0
+      ✔ Sent the order to the market (173ms)
+
+  Test4: Duplicated orders
+    One PROVIDER order
+	> Double auction B market creation
+	>> Market state
+		 MAX price = 2000, MIN price = 5 
+	> Market Orders:
+	  Number of sell orders = 0
+	  Number of buy orders = 0
+	  -----
+	> Market open
+==> seller:0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+==> order 1:BaseContract {
+  target: '0x71C95911E9a5D330f4D621842EC243EE1343292e',
+  interface: [Interface],
+  runner: [HardhatEthersSigner],
+  filters: {},
+  fallback: null,
+  [Symbol(_ethersInternal_contract)]: {}
+}
+	>Adding sell order. Duplicated = false
+		New order: index= 1 quantity= 150 price=35
+		>> Adding new entry in map
+	> Market Orders:
+	  Number of sell orders = 1
+		Order 1: owner=0x70997970c51812dc3a010c7d01b50e0d17dc79c8 index=1
+		Order 1: quantity=150 price=35
+	  Number of buy orders = 0
+	  -----
+      ✔ Update the old order (159ms)
+
+
+  12 passing (5s)
+
